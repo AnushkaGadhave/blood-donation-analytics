@@ -1,0 +1,552 @@
+{
+  "star": {
+    "id": "star",
+    "name": "Star Schema",
+    "subtitle": "Single Central Fact Table with De-normalized Dimension Tables",
+    "aim": "To construct a high-performance Star Schema data warehouse architecture centering on individual donor transfusion observations (fact_transfusion_events) directly linked to 4 denormalized dimensional tables for high-speed analytical aggregation and OLAP query execution.",
+    "explanation": "In the Star Schema, all dimension entities (Recency, Frequency, Tenure, Donation Status) are de-normalized and directly connected to the central fact table via single foreign-key joins. This minimizes relational join overhead and maximizes analytical query performance for executive dashboards and OLAP slicing.",
+    "grain": "Individual donor behavioral observation record (748 instances from Yeh et al., 2008).",
+    "diagram": {
+      "center_node": "fact_transfusion_events",
+      "nodes": [
+        {
+          "id": "fact_transfusion_events",
+          "name": "fact_transfusion_events",
+          "type": "fact",
+          "category": "Central Fact Table",
+          "color": "#7956E8",
+          "rows": 748,
+          "keys": [
+            "fact_id (PK)",
+            "donor_id (FK_SRC)",
+            "recency_tier_id (FK)",
+            "frequency_tier_id (FK)",
+            "tenure_tier_id (FK)",
+            "donation_status_id (FK)"
+          ],
+          "measures": [
+            "monetary_volume_cc",
+            "donation_frequency_count",
+            "recency_months",
+            "tenure_months"
+          ]
+        },
+        {
+          "id": "dim_recency",
+          "name": "dim_recency",
+          "type": "dimension",
+          "category": "Dimension Table",
+          "color": "#58B8F5",
+          "rows": 4,
+          "keys": [
+            "recency_tier_id (PK)"
+          ],
+          "attributes": [
+            "tier_code",
+            "tier_name",
+            "min_months",
+            "max_months",
+            "engagement_status",
+            "clinical_action"
+          ]
+        },
+        {
+          "id": "dim_frequency",
+          "name": "dim_frequency",
+          "type": "dimension",
+          "category": "Dimension Table",
+          "color": "#56C9A5",
+          "rows": 4,
+          "keys": [
+            "frequency_tier_id (PK)"
+          ],
+          "attributes": [
+            "tier_code",
+            "tier_name",
+            "min_donations",
+            "max_donations",
+            "loyalty_tier",
+            "expected_monetary_cc"
+          ]
+        },
+        {
+          "id": "dim_tenure",
+          "name": "dim_tenure",
+          "type": "dimension",
+          "category": "Dimension Table",
+          "color": "#FFD166",
+          "rows": 4,
+          "keys": [
+            "tenure_tier_id (PK)"
+          ],
+          "attributes": [
+            "tier_code",
+            "tier_name",
+            "min_months",
+            "max_months",
+            "lifecycle_phase",
+            "retention_priority"
+          ]
+        },
+        {
+          "id": "dim_donation_status",
+          "name": "dim_donation_status",
+          "type": "dimension",
+          "category": "Dimension Table",
+          "color": "#FF786B",
+          "rows": 2,
+          "keys": [
+            "donation_status_id (PK)"
+          ],
+          "attributes": [
+            "status_code",
+            "status_label",
+            "target_value",
+            "cohort_meaning"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "source": "dim_recency",
+          "target": "fact_transfusion_events",
+          "cardinality": "1 : N",
+          "fk": "recency_tier_id",
+          "color": "#58B8F5"
+        },
+        {
+          "source": "dim_frequency",
+          "target": "fact_transfusion_events",
+          "cardinality": "1 : N",
+          "fk": "frequency_tier_id",
+          "color": "#56C9A5"
+        },
+        {
+          "source": "dim_tenure",
+          "target": "fact_transfusion_events",
+          "cardinality": "1 : N",
+          "fk": "tenure_tier_id",
+          "color": "#FFD166"
+        },
+        {
+          "source": "dim_donation_status",
+          "target": "fact_transfusion_events",
+          "cardinality": "1 : N",
+          "fk": "donation_status_id",
+          "color": "#FF786B"
+        }
+      ]
+    },
+    "table_names": [
+      "fact_transfusion_events",
+      "dim_recency",
+      "dim_frequency",
+      "dim_tenure",
+      "dim_donation_status"
+    ],
+    "transformation_method": "Continuous variables (Recency, Frequency, Time) are mapped into discrete bins using strictly non-overlapping range criteria covering [0, 120] months for recency, [1, 100] donations for frequency, and [0, 200] months for tenure. Every row is verified against the 4 conformed dimension lookups.",
+    "advantages": [
+      "Optimal query speed: requires only simple 1-level JOINs between the fact table and dimensions.",
+      "Intuitive business representation easily understood by hospital administrators and analysts.",
+      "Directly compatible with high-speed OLAP cube engines and slice/dice operations."
+    ],
+    "limitations": [
+      "Dimension tables contain de-normalized descriptive attributes, creating mild data redundancy.",
+      "Modifying dimension hierarchy descriptions requires updating all corresponding rows in the dimension table."
+    ],
+    "conclusion": "The Star Schema delivers maximum analytical query performance and simplicity, making it the premier choice for blood drive dashboard analytics and OLAP cubes."
+  },
+  "snowflake": {
+    "id": "snowflake",
+    "name": "Snowflake Schema",
+    "subtitle": "Normalized (3NF) Dimensional Hierarchies with Sub-Category Tables",
+    "aim": "To construct a normalized Snowflake Schema data warehouse model that decomposes donor behavioral dimensions into normalized Third Normal Form (3NF) sub-category entities, minimizing descriptive redundancy while preserving full analytical capability.",
+    "explanation": "In the Snowflake Schema, the dimension tables from the Star Schema are normalized into multi-level hierarchies (dim_recency \u2794 dim_recency_category, dim_frequency \u2794 dim_frequency_category, dim_tenure \u2794 dim_tenure_category). This structure eliminates attribute duplication at the cost of additional join operations during querying.",
+    "grain": "Individual donor behavioral observation record (748 instances from Yeh et al., 2008).",
+    "diagram": {
+      "center_node": "fact_transfusion_events",
+      "nodes": [
+        {
+          "id": "fact_transfusion_events",
+          "name": "fact_transfusion_events",
+          "type": "fact",
+          "category": "Central Fact Table",
+          "color": "#7956E8",
+          "rows": 748,
+          "keys": [
+            "fact_id (PK)",
+            "donor_id (FK_SRC)",
+            "recency_tier_id (FK)",
+            "frequency_tier_id (FK)",
+            "tenure_tier_id (FK)",
+            "donation_status_id (FK)"
+          ],
+          "measures": [
+            "monetary_volume_cc",
+            "donation_frequency_count",
+            "recency_months",
+            "tenure_months"
+          ]
+        },
+        {
+          "id": "dim_recency",
+          "name": "dim_recency (L1)",
+          "type": "dimension",
+          "category": "Normalized Dimension (Level 1)",
+          "color": "#58B8F5",
+          "rows": 4,
+          "keys": [
+            "recency_tier_id (PK)",
+            "category_id (FK)"
+          ],
+          "attributes": [
+            "tier_name",
+            "min_months",
+            "max_months"
+          ]
+        },
+        {
+          "id": "dim_recency_category",
+          "name": "dim_recency_category (L2)",
+          "type": "hierarchy",
+          "category": "Hierarchy Category (Level 2)",
+          "color": "#0284C7",
+          "rows": 2,
+          "keys": [
+            "category_id (PK)"
+          ],
+          "attributes": [
+            "category_name",
+            "clinical_engagement_protocol",
+            "follow_up_cadence"
+          ]
+        },
+        {
+          "id": "dim_frequency",
+          "name": "dim_frequency (L1)",
+          "type": "dimension",
+          "category": "Normalized Dimension (Level 1)",
+          "color": "#56C9A5",
+          "rows": 4,
+          "keys": [
+            "frequency_tier_id (PK)",
+            "loyalty_id (FK)"
+          ],
+          "attributes": [
+            "tier_name",
+            "min_donations",
+            "max_donations"
+          ]
+        },
+        {
+          "id": "dim_frequency_category",
+          "name": "dim_frequency_category (L2)",
+          "type": "hierarchy",
+          "category": "Hierarchy Category (Level 2)",
+          "color": "#059669",
+          "rows": 2,
+          "keys": [
+            "loyalty_id (PK)"
+          ],
+          "attributes": [
+            "loyalty_tier_name",
+            "recognition_level",
+            "monetary_range_cc"
+          ]
+        },
+        {
+          "id": "dim_tenure",
+          "name": "dim_tenure (L1)",
+          "type": "dimension",
+          "category": "Normalized Dimension (Level 1)",
+          "color": "#FFD166",
+          "rows": 4,
+          "keys": [
+            "tenure_tier_id (PK)",
+            "lifecycle_id (FK)"
+          ],
+          "attributes": [
+            "tier_name",
+            "min_months",
+            "max_months"
+          ]
+        },
+        {
+          "id": "dim_tenure_category",
+          "name": "dim_tenure_category (L2)",
+          "type": "hierarchy",
+          "category": "Hierarchy Category (Level 2)",
+          "color": "#D97706",
+          "rows": 2,
+          "keys": [
+            "lifecycle_id (PK)"
+          ],
+          "attributes": [
+            "lifecycle_phase_name",
+            "cohort_type",
+            "campaign_strategy"
+          ]
+        },
+        {
+          "id": "dim_donation_status",
+          "name": "dim_donation_status",
+          "type": "dimension",
+          "category": "Dimension Table",
+          "color": "#FF786B",
+          "rows": 2,
+          "keys": [
+            "donation_status_id (PK)"
+          ],
+          "attributes": [
+            "status_code",
+            "status_label",
+            "target_value"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "source": "dim_recency",
+          "target": "fact_transfusion_events",
+          "cardinality": "1 : N",
+          "fk": "recency_tier_id",
+          "color": "#58B8F5"
+        },
+        {
+          "source": "dim_recency_category",
+          "target": "dim_recency",
+          "cardinality": "1 : N",
+          "fk": "category_id",
+          "color": "#0284C7"
+        },
+        {
+          "source": "dim_frequency",
+          "target": "fact_transfusion_events",
+          "cardinality": "1 : N",
+          "fk": "frequency_tier_id",
+          "color": "#56C9A5"
+        },
+        {
+          "source": "dim_frequency_category",
+          "target": "dim_frequency",
+          "cardinality": "1 : N",
+          "fk": "loyalty_id",
+          "color": "#059669"
+        },
+        {
+          "source": "dim_tenure",
+          "target": "fact_transfusion_events",
+          "cardinality": "1 : N",
+          "fk": "tenure_tier_id",
+          "color": "#FFD166"
+        },
+        {
+          "source": "dim_tenure_category",
+          "target": "dim_tenure",
+          "cardinality": "1 : N",
+          "fk": "lifecycle_id",
+          "color": "#D97706"
+        },
+        {
+          "source": "dim_donation_status",
+          "target": "fact_transfusion_events",
+          "cardinality": "1 : N",
+          "fk": "donation_status_id",
+          "color": "#FF786B"
+        }
+      ]
+    },
+    "table_names": [
+      "fact_transfusion_events",
+      "dim_recency",
+      "dim_recency_category",
+      "dim_frequency",
+      "dim_frequency_category",
+      "dim_tenure",
+      "dim_tenure_category",
+      "dim_donation_status"
+    ],
+    "transformation_method": "Dimension attributes are factored into 3NF relational normalization. Each level-1 tier points via a foreign key to a parent category table, ensuring zero repeated descriptive metadata across categories.",
+    "advantages": [
+      "Zero attribute redundancy: updating an outreach protocol or recognition level requires modifying exactly one row.",
+      "Strict hierarchical data integrity across macro and micro donor segmentations.",
+      "Reduced disk storage footprint in massive enterprise scale environments."
+    ],
+    "limitations": [
+      "Queries require multi-level SQL JOINs across 3NF tables, increasing CPU overhead and query latency.",
+      "More complex schema topology to maintain and document."
+    ],
+    "conclusion": "The Snowflake Schema provides rigorous normalization and eliminates redundancy, making it well-suited for enterprise master data management systems."
+  },
+  "constellation": {
+    "id": "constellation",
+    "name": "Fact Constellation Schema",
+    "subtitle": "Galaxy Architecture with Multiple Fact Tables Sharing Conformed Dimensions",
+    "aim": "To construct a Fact Constellation (Galaxy) Schema that decouples historical donor behavioral profiling (fact_donor_history) from recorded mobile drive campaign response observations (fact_donation_response), sharing conformed dimensions across analytical business processes.",
+    "explanation": "The Fact Constellation Schema models multiple independent business processes using separate fact tables. In this implementation, historical donor RFMT measurements are modeled in fact_donor_history, while the March 2007 campaign response event is modeled in fact_donation_response. Both facts share conformed dimensions (dim_recency, dim_frequency, dim_tenure, dim_donation_status).",
+    "grain": "Dual Grain: fact_donor_history captures cumulative RFMT donor lifecycle state; fact_donation_response captures the specific March 2007 mobile collection campaign outcome.",
+    "diagram": {
+      "center_node": "fact_donor_history & fact_donation_response",
+      "nodes": [
+        {
+          "id": "fact_donor_history",
+          "name": "fact_donor_history (P1)",
+          "type": "fact",
+          "category": "Fact Table (Behavioral Profiling)",
+          "color": "#7956E8",
+          "rows": 748,
+          "keys": [
+            "history_fact_id (PK)",
+            "donor_id (FK_SRC)",
+            "recency_tier_id (FK)",
+            "frequency_tier_id (FK)",
+            "tenure_tier_id (FK)"
+          ],
+          "measures": [
+            "recency_months",
+            "donation_frequency_count",
+            "monetary_volume_cc",
+            "tenure_months"
+          ]
+        },
+        {
+          "id": "fact_donation_response",
+          "name": "fact_donation_response (P2)",
+          "type": "fact",
+          "category": "Fact Table (Campaign Response)",
+          "color": "#EC79B9",
+          "rows": 748,
+          "keys": [
+            "response_fact_id (PK)",
+            "donor_id (FK_SRC)",
+            "donation_status_id (FK)"
+          ],
+          "measures": [
+            "donated_march_2007"
+          ]
+        },
+        {
+          "id": "dim_recency",
+          "name": "dim_recency",
+          "type": "conformed",
+          "category": "Conformed Shared Dimension",
+          "color": "#58B8F5",
+          "rows": 4,
+          "keys": [
+            "recency_tier_id (PK)"
+          ],
+          "attributes": [
+            "tier_code",
+            "tier_name",
+            "engagement_status"
+          ]
+        },
+        {
+          "id": "dim_frequency",
+          "name": "dim_frequency",
+          "type": "conformed",
+          "category": "Conformed Shared Dimension",
+          "color": "#56C9A5",
+          "rows": 4,
+          "keys": [
+            "frequency_tier_id (PK)"
+          ],
+          "attributes": [
+            "tier_code",
+            "tier_name",
+            "loyalty_tier"
+          ]
+        },
+        {
+          "id": "dim_tenure",
+          "name": "dim_tenure",
+          "type": "conformed",
+          "category": "Conformed Shared Dimension",
+          "color": "#FFD166",
+          "rows": 4,
+          "keys": [
+            "tenure_tier_id (PK)"
+          ],
+          "attributes": [
+            "tier_code",
+            "tier_name",
+            "lifecycle_phase"
+          ]
+        },
+        {
+          "id": "dim_donation_status",
+          "name": "dim_donation_status",
+          "type": "conformed",
+          "category": "Conformed Shared Dimension",
+          "color": "#FF786B",
+          "rows": 2,
+          "keys": [
+            "donation_status_id (PK)"
+          ],
+          "attributes": [
+            "status_code",
+            "status_label",
+            "target_value"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "source": "dim_recency",
+          "target": "fact_donor_history",
+          "cardinality": "1 : N",
+          "fk": "recency_tier_id",
+          "color": "#58B8F5"
+        },
+        {
+          "source": "dim_frequency",
+          "target": "fact_donor_history",
+          "cardinality": "1 : N",
+          "fk": "frequency_tier_id",
+          "color": "#56C9A5"
+        },
+        {
+          "source": "dim_tenure",
+          "target": "fact_donor_history",
+          "cardinality": "1 : N",
+          "fk": "tenure_tier_id",
+          "color": "#FFD166"
+        },
+        {
+          "source": "dim_donation_status",
+          "target": "fact_donation_response",
+          "cardinality": "1 : N",
+          "fk": "donation_status_id",
+          "color": "#FF786B"
+        },
+        {
+          "source": "fact_donor_history",
+          "target": "fact_donation_response",
+          "cardinality": "Drill-Across Bridge",
+          "fk": "donor_id",
+          "color": "#7956E8",
+          "dashed": true
+        }
+      ]
+    },
+    "table_names": [
+      "fact_donor_history",
+      "fact_donation_response",
+      "dim_recency",
+      "dim_frequency",
+      "dim_tenure",
+      "dim_donation_status"
+    ],
+    "transformation_method": "The single source observation dataset is partitioned into two distinct functional domain facts: historical behavioral state vs operational campaign response outcome, bridged via conformed dimensions and donor surrogate keys.",
+    "advantages": [
+      "High flexibility: supports multiple business processes simultaneously without forcing disparate measures into a monolithic table.",
+      "Conformed dimensions enforce enterprise-wide reporting consistency across departments.",
+      "Allows independent evolution and scaling of donor profile tracking vs campaign outcome logging."
+    ],
+    "limitations": [
+      "Cross-fact analytical queries require drill-across operations or conform-dimension joins.",
+      "Requires centralized data governance to maintain conformed dimension definitions."
+    ],
+    "conclusion": "The Fact Constellation Schema provides the ultimate architectural flexibility for enterprise healthcare data warehouses encompassing both continuous donor tracking and episodic campaign management."
+  }
+}

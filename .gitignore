@@ -46,7 +46,13 @@ pnpm-debug.log*
 backend/data/*.data
 backend/data/*.names
 backend/data/*.csv
+backend/data/**/*.data
+backend/data/**/*.names
+backend/data/**/*.csv
 !backend/data/README.md
+!backend/data/**/README.md
+!backend/data/**/*.json
+!backend/data/**/*.md
 
 # IDE & Editor Files
 .vscode/

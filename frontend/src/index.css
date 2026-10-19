@@ -1,7 +1,56 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-violet: #7956E8;
+  --color-brand-coral: #FF786B;
+  --color-brand-yellow: #FFD166;
+  --color-brand-mint: #56C9A5;
+  --color-brand-sky: #58B8F5;
+  --color-brand-pink: #EC79B9;
+  --color-brand-bg: #F8F7FC;
+  --color-brand-navy: #131127;
+  
+  --color-exp-1: #7956E8;
+  --color-exp-2: #58B8F5;
+  --color-exp-3: #56C9A5;
+  --color-exp-4: #FFD166;
+  --color-exp-5: #FF786B;
+  --color-exp-6: #EC79B9;
+  --color-exp-7: #7956E8;
+  --color-exp-8: #36B9B5;
+  --color-exp-9: #84CC16;
+}
+
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #F8F7FC;
+    color: #131127;
   }
+}
+
+/* Custom scrollbars and smooth interactive card styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f0f7;
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #d8d3f0;
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #7956E8;
+}
+
+/* Subtle glow and elevation helpers */
+.card-hover {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -6px rgba(121, 86, 232, 0.08), 0 4px 12px -2px rgba(19, 17, 39, 0.04);
 }

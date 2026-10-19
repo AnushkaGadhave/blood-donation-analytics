@@ -1,0 +1,709 @@
+{
+  "dataset_split": {
+    "train_records": 598,
+    "test_records": 150,
+    "split_ratio": "80% Train / 20% Test (Stratified)",
+    "train_positives": 142,
+    "train_negatives": 456,
+    "test_positives": 36,
+    "test_negatives": 114,
+    "random_state": 42
+  },
+  "models_comparison": [
+    {
+      "model_name": "Logistic Regression",
+      "description": "Linear log-odds estimator with L2 regularization and balanced class weighting.",
+      "metrics": {
+        "accuracy": 0.72,
+        "balanced_accuracy": 0.7588,
+        "precision": 0.4545,
+        "recall": 0.8333,
+        "specificity": 0.6842,
+        "f1_score": 0.5882,
+        "roc_auc": 0.7848
+      },
+      "confusion_matrix": {
+        "matrix": [
+          [
+            78,
+            36
+          ],
+          [
+            6,
+            30
+          ]
+        ],
+        "true_negatives": 78,
+        "false_positives": 36,
+        "false_negatives": 6,
+        "true_positives": 30,
+        "total_test_samples": 150
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.009,
+          "tpr": 0.083
+        },
+        {
+          "fpr": 0.026,
+          "tpr": 0.222
+        },
+        {
+          "fpr": 0.088,
+          "tpr": 0.333
+        },
+        {
+          "fpr": 0.114,
+          "tpr": 0.528
+        },
+        {
+          "fpr": 0.158,
+          "tpr": 0.667
+        },
+        {
+          "fpr": 0.184,
+          "tpr": 0.694
+        },
+        {
+          "fpr": 0.289,
+          "tpr": 0.722
+        },
+        {
+          "fpr": 0.316,
+          "tpr": 0.833
+        },
+        {
+          "fpr": 0.509,
+          "tpr": 0.833
+        },
+        {
+          "fpr": 0.588,
+          "tpr": 0.889
+        },
+        {
+          "fpr": 0.649,
+          "tpr": 0.889
+        },
+        {
+          "fpr": 0.684,
+          "tpr": 0.917
+        },
+        {
+          "fpr": 0.772,
+          "tpr": 0.944
+        },
+        {
+          "fpr": 0.886,
+          "tpr": 0.944
+        },
+        {
+          "fpr": 0.939,
+          "tpr": 1.0
+        }
+      ],
+      "pr_curve": [
+        {
+          "recall": 1.0,
+          "precision": 0.24
+        },
+        {
+          "recall": 0.972,
+          "precision": 0.25
+        },
+        {
+          "recall": 0.944,
+          "precision": 0.256
+        },
+        {
+          "recall": 0.944,
+          "precision": 0.276
+        },
+        {
+          "recall": 0.944,
+          "precision": 0.301
+        },
+        {
+          "recall": 0.889,
+          "precision": 0.317
+        },
+        {
+          "recall": 0.861,
+          "precision": 0.333
+        },
+        {
+          "recall": 0.833,
+          "precision": 0.361
+        },
+        {
+          "recall": 0.833,
+          "precision": 0.405
+        },
+        {
+          "recall": 0.833,
+          "precision": 0.448
+        },
+        {
+          "recall": 0.75,
+          "precision": 0.45
+        },
+        {
+          "recall": 0.694,
+          "precision": 0.532
+        },
+        {
+          "recall": 0.583,
+          "precision": 0.618
+        },
+        {
+          "recall": 0.361,
+          "precision": 0.52
+        },
+        {
+          "recall": 0.222,
+          "precision": 0.533
+        },
+        {
+          "recall": 0.139,
+          "precision": 0.625
+        },
+        {
+          "recall": 0.028,
+          "precision": 1.0
+        }
+      ],
+      "hyperparameters": {
+        "C": "1.0",
+        "class_weight": "balanced"
+      }
+    },
+    {
+      "model_name": "Random Forest",
+      "description": "Ensemble bagging over 100 bootstrap trees with random feature subspacing.",
+      "metrics": {
+        "accuracy": 0.7333,
+        "balanced_accuracy": 0.739,
+        "precision": 0.4655,
+        "recall": 0.75,
+        "specificity": 0.7281,
+        "f1_score": 0.5745,
+        "roc_auc": 0.7719
+      },
+      "confusion_matrix": {
+        "matrix": [
+          [
+            83,
+            31
+          ],
+          [
+            9,
+            27
+          ]
+        ],
+        "true_negatives": 83,
+        "false_positives": 31,
+        "false_negatives": 9,
+        "true_positives": 27,
+        "total_test_samples": 150
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.026,
+          "tpr": 0.139
+        },
+        {
+          "fpr": 0.053,
+          "tpr": 0.194
+        },
+        {
+          "fpr": 0.096,
+          "tpr": 0.389
+        },
+        {
+          "fpr": 0.123,
+          "tpr": 0.528
+        },
+        {
+          "fpr": 0.149,
+          "tpr": 0.583
+        },
+        {
+          "fpr": 0.184,
+          "tpr": 0.667
+        },
+        {
+          "fpr": 0.272,
+          "tpr": 0.722
+        },
+        {
+          "fpr": 0.351,
+          "tpr": 0.806
+        },
+        {
+          "fpr": 0.439,
+          "tpr": 0.833
+        },
+        {
+          "fpr": 0.535,
+          "tpr": 0.833
+        },
+        {
+          "fpr": 0.667,
+          "tpr": 0.889
+        },
+        {
+          "fpr": 0.789,
+          "tpr": 0.917
+        },
+        {
+          "fpr": 0.886,
+          "tpr": 0.944
+        },
+        {
+          "fpr": 0.939,
+          "tpr": 0.972
+        }
+      ],
+      "pr_curve": [
+        {
+          "recall": 1.0,
+          "precision": 0.24
+        },
+        {
+          "recall": 0.944,
+          "precision": 0.25
+        },
+        {
+          "recall": 0.917,
+          "precision": 0.258
+        },
+        {
+          "recall": 0.917,
+          "precision": 0.28
+        },
+        {
+          "recall": 0.889,
+          "precision": 0.288
+        },
+        {
+          "recall": 0.861,
+          "precision": 0.307
+        },
+        {
+          "recall": 0.833,
+          "precision": 0.319
+        },
+        {
+          "recall": 0.833,
+          "precision": 0.361
+        },
+        {
+          "recall": 0.806,
+          "precision": 0.382
+        },
+        {
+          "recall": 0.75,
+          "precision": 0.435
+        },
+        {
+          "recall": 0.694,
+          "precision": 0.455
+        },
+        {
+          "recall": 0.611,
+          "precision": 0.564
+        },
+        {
+          "recall": 0.5,
+          "precision": 0.581
+        },
+        {
+          "recall": 0.389,
+          "precision": 0.583
+        },
+        {
+          "recall": 0.306,
+          "precision": 0.647
+        },
+        {
+          "recall": 0.167,
+          "precision": 0.6
+        },
+        {
+          "recall": 0.0,
+          "precision": 1.0
+        }
+      ],
+      "hyperparameters": {
+        "n_estimators": "100",
+        "max_depth": "5",
+        "min_samples_leaf": "5",
+        "class_weight": "balanced"
+      }
+    },
+    {
+      "model_name": "Support Vector Machine (SVM)",
+      "description": "Non-linear Radial Basis Function (RBF) margin maximizer with Platt probability scaling.",
+      "metrics": {
+        "accuracy": 0.7067,
+        "balanced_accuracy": 0.731,
+        "precision": 0.4375,
+        "recall": 0.7778,
+        "specificity": 0.6842,
+        "f1_score": 0.56,
+        "roc_auc": 0.7941
+      },
+      "confusion_matrix": {
+        "matrix": [
+          [
+            78,
+            36
+          ],
+          [
+            8,
+            28
+          ]
+        ],
+        "true_negatives": 78,
+        "false_positives": 36,
+        "false_negatives": 8,
+        "true_positives": 28,
+        "total_test_samples": 150
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.009,
+          "tpr": 0.056
+        },
+        {
+          "fpr": 0.026,
+          "tpr": 0.222
+        },
+        {
+          "fpr": 0.044,
+          "tpr": 0.306
+        },
+        {
+          "fpr": 0.061,
+          "tpr": 0.333
+        },
+        {
+          "fpr": 0.07,
+          "tpr": 0.5
+        },
+        {
+          "fpr": 0.123,
+          "tpr": 0.528
+        },
+        {
+          "fpr": 0.132,
+          "tpr": 0.583
+        },
+        {
+          "fpr": 0.149,
+          "tpr": 0.667
+        },
+        {
+          "fpr": 0.175,
+          "tpr": 0.694
+        },
+        {
+          "fpr": 0.246,
+          "tpr": 0.75
+        },
+        {
+          "fpr": 0.316,
+          "tpr": 0.806
+        },
+        {
+          "fpr": 0.456,
+          "tpr": 0.806
+        },
+        {
+          "fpr": 0.535,
+          "tpr": 0.861
+        },
+        {
+          "fpr": 0.588,
+          "tpr": 0.889
+        },
+        {
+          "fpr": 0.702,
+          "tpr": 0.889
+        },
+        {
+          "fpr": 0.754,
+          "tpr": 0.917
+        },
+        {
+          "fpr": 0.851,
+          "tpr": 1.0
+        },
+        {
+          "fpr": 0.93,
+          "tpr": 1.0
+        }
+      ],
+      "pr_curve": [
+        {
+          "recall": 1.0,
+          "precision": 0.24
+        },
+        {
+          "recall": 1.0,
+          "precision": 0.257
+        },
+        {
+          "recall": 1.0,
+          "precision": 0.281
+        },
+        {
+          "recall": 0.917,
+          "precision": 0.273
+        },
+        {
+          "recall": 0.889,
+          "precision": 0.288
+        },
+        {
+          "recall": 0.889,
+          "precision": 0.317
+        },
+        {
+          "recall": 0.833,
+          "precision": 0.333
+        },
+        {
+          "recall": 0.833,
+          "precision": 0.361
+        },
+        {
+          "recall": 0.806,
+          "precision": 0.392
+        },
+        {
+          "recall": 0.806,
+          "precision": 0.433
+        },
+        {
+          "recall": 0.722,
+          "precision": 0.481
+        },
+        {
+          "recall": 0.667,
+          "precision": 0.585
+        },
+        {
+          "recall": 0.528,
+          "precision": 0.594
+        },
+        {
+          "recall": 0.472,
+          "precision": 0.68
+        },
+        {
+          "recall": 0.333,
+          "precision": 0.667
+        },
+        {
+          "recall": 0.167,
+          "precision": 0.667
+        }
+      ],
+      "hyperparameters": {
+        "C": "1.0",
+        "class_weight": "balanced",
+        "kernel": "rbf"
+      }
+    },
+    {
+      "model_name": "Decision Tree",
+      "description": "Recursive binary partitioning with Gini impurity splitting and tree depth pruning.",
+      "metrics": {
+        "accuracy": 0.6667,
+        "balanced_accuracy": 0.6857,
+        "precision": 0.3939,
+        "recall": 0.7222,
+        "specificity": 0.6491,
+        "f1_score": 0.5098,
+        "roc_auc": 0.7427
+      },
+      "confusion_matrix": {
+        "matrix": [
+          [
+            74,
+            40
+          ],
+          [
+            10,
+            26
+          ]
+        ],
+        "true_negatives": 74,
+        "false_positives": 40,
+        "false_negatives": 10,
+        "true_positives": 26,
+        "total_test_samples": 150
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0
+        },
+        {
+          "fpr": 0.026,
+          "tpr": 0.167
+        },
+        {
+          "fpr": 0.044,
+          "tpr": 0.25
+        },
+        {
+          "fpr": 0.105,
+          "tpr": 0.528
+        },
+        {
+          "fpr": 0.219,
+          "tpr": 0.694
+        },
+        {
+          "fpr": 0.351,
+          "tpr": 0.722
+        },
+        {
+          "fpr": 0.377,
+          "tpr": 0.75
+        },
+        {
+          "fpr": 0.421,
+          "tpr": 0.778
+        },
+        {
+          "fpr": 0.675,
+          "tpr": 0.806
+        },
+        {
+          "fpr": 0.719,
+          "tpr": 0.806
+        },
+        {
+          "fpr": 0.772,
+          "tpr": 0.889
+        },
+        {
+          "fpr": 0.807,
+          "tpr": 0.917
+        },
+        {
+          "fpr": 0.825,
+          "tpr": 0.917
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0
+        }
+      ],
+      "pr_curve": [
+        {
+          "recall": 1.0,
+          "precision": 0.24
+        },
+        {
+          "recall": 0.917,
+          "precision": 0.26
+        },
+        {
+          "recall": 0.917,
+          "precision": 0.264
+        },
+        {
+          "recall": 0.889,
+          "precision": 0.267
+        },
+        {
+          "recall": 0.806,
+          "precision": 0.261
+        },
+        {
+          "recall": 0.806,
+          "precision": 0.274
+        },
+        {
+          "recall": 0.778,
+          "precision": 0.368
+        },
+        {
+          "recall": 0.75,
+          "precision": 0.386
+        },
+        {
+          "recall": 0.722,
+          "precision": 0.394
+        },
+        {
+          "recall": 0.694,
+          "precision": 0.5
+        },
+        {
+          "recall": 0.528,
+          "precision": 0.613
+        },
+        {
+          "recall": 0.25,
+          "precision": 0.643
+        },
+        {
+          "recall": 0.167,
+          "precision": 0.667
+        },
+        {
+          "recall": 0.0,
+          "precision": 1.0
+        }
+      ],
+      "hyperparameters": {
+        "max_depth": "4",
+        "min_samples_leaf": "8",
+        "class_weight": "balanced"
+      }
+    }
+  ],
+  "best_model_name": "Logistic Regression",
+  "feature_importance": [
+    {
+      "feature": "recency_months",
+      "importance": 0.3337,
+      "percentage": 33.4
+    },
+    {
+      "feature": "time_months",
+      "importance": 0.2739,
+      "percentage": 27.4
+    },
+    {
+      "feature": "frequency_times",
+      "importance": 0.1962,
+      "percentage": 19.6
+    },
+    {
+      "feature": "monetary_cc",
+      "importance": 0.1962,
+      "percentage": 19.6
+    }
+  ],
+  "evaluation_tradeoff_summary": {
+    "primary_metric": "F1-Score and Balanced Accuracy",
+    "tradeoff_explanation": "In mobile blood transfusion recruitment, relying solely on raw Accuracy is misleading due to the 76.2% negative class majority (a naive classifier predicting all 0s scores 76.2% accuracy but identifies 0 donors). Balanced class weighting significantly boosts Recall (catching potential donors) while maintaining adequate Precision to minimize wasted clinic contact outreach."
+  }
+}

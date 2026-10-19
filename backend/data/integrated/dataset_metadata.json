@@ -1,0 +1,186 @@
+{
+  "execution_timestamp": "2026-10-10T22:27:43.322289",
+  "datasets": {
+    "indian_blood_banks": {
+      "source_file": "blood-banks.csv",
+      "raw_rows": 2823,
+      "raw_cols": 27,
+      "cleaned_rows": 2823,
+      "cleaned_cols": 31,
+      "raw_duplicates": 0,
+      "unique_states_count": 36,
+      "states": [
+        "Andaman And Nicobar Islands",
+        "Andhra Pradesh",
+        "Arunachal Pradesh",
+        "Assam",
+        "Bihar",
+        "Chandigarh",
+        "Chhattisgarh",
+        "Dadra and Nagar Haveli",
+        "Daman and Diu",
+        "Delhi",
+        "Goa",
+        "Gujarat",
+        "Haryana",
+        "Himachal Pradesh",
+        "Jammu and Kashmir",
+        "Jharkhand",
+        "Karnataka",
+        "Kerala",
+        "Lakshadweep",
+        "Madhya Pradesh",
+        "Maharashtra",
+        "Manipur",
+        "Meghalaya",
+        "Mizoram",
+        "Nagaland",
+        "Odisha",
+        "Puducherry",
+        "Punjab",
+        "Rajasthan",
+        "Sikkim",
+        "Tamil Nadu",
+        "Telangana",
+        "Tripura",
+        "Uttar Pradesh",
+        "Uttarakhand",
+        "West Bengal"
+      ],
+      "categories": {
+        "Government": 1055,
+        "Private": 999,
+        "Charity": 690,
+        "Not Specified": 79
+      },
+      "component_availability": {
+        "NO": 1254,
+        "YES": 1151,
+        "NOT SPECIFIED": 418
+      },
+      "valid_coordinates_count": 2439,
+      "processed_file": "processed/indian_blood_bank_directory_clean.csv"
+    },
+    "malaysia_donations": {
+      "source_file": "blood_donations_state.csv",
+      "raw_rows": 493155,
+      "raw_cols": 4,
+      "cleaned_rows": 493155,
+      "cleaned_cols": 6,
+      "raw_duplicates": 0,
+      "min_date": "2006-01-01",
+      "max_date": "2026-10-09",
+      "unique_states_count": 13,
+      "states": [
+        "Johor",
+        "Kedah",
+        "Kelantan",
+        "Melaka",
+        "Negeri Sembilan",
+        "Pahang",
+        "Perak",
+        "Pulau Pinang",
+        "Sabah",
+        "Sarawak",
+        "Selangor",
+        "Terengganu",
+        "W.P. Kuala Lumpur"
+      ],
+      "blood_types": {
+        "all": 98631,
+        "a": 98631,
+        "b": 98631,
+        "o": 98631,
+        "ab": 98631
+      },
+      "aggregate_records_count": 98631,
+      "individual_records_count": 394524,
+      "total_recorded_donations_all": 9893967,
+      "total_recorded_donations_individual_sum": 9893663,
+      "processed_file": "processed/malaysia_blood_donations_clean.csv"
+    },
+    "uci_transfusion": {
+      "source_file": "transfusion.data",
+      "raw_rows": 748,
+      "raw_cols": 5,
+      "cleaned_rows": 748,
+      "cleaned_cols": 8,
+      "raw_duplicates": 215,
+      "note_on_duplicates": "215 duplicate feature tuples preserved as legitimate identical donor observations.",
+      "target_distribution": {
+        "class_0_did_not_donate": 570,
+        "class_1_donated": 178
+      },
+      "positive_rate_percent": 23.8,
+      "descriptive_statistics": {
+        "recency_mean": 9.51,
+        "frequency_mean": 5.51,
+        "monetary_mean": 1378.68,
+        "time_mean": 34.28
+      },
+      "processed_file": "processed/uci_donor_behaviour_clean.csv"
+    }
+  },
+  "transformations": [],
+  "join_rules": {
+    "cross_country_joins": "REJECTED (Distinct entities, geographic scopes, and populations)",
+    "schema_architecture": "Fact Constellation Schema (Galaxy Schema) with Conformed Dimensions"
+  },
+  "integrated_warehouse": {
+    "schema_type": "Fact Constellation Schema (Galaxy Schema)",
+    "fact_tables": [
+      {
+        "table_name": "fact_malaysia_daily_donations.csv",
+        "rows": 493155,
+        "grain": "Daily donations per State x Blood Group",
+        "measures": [
+          "donations"
+        ],
+        "foreign_keys": [
+          "time_id -> dim_time.time_id",
+          "geography_id -> dim_geography.geography_id",
+          "blood_group_id -> dim_blood_group.blood_group_id"
+        ]
+      },
+      {
+        "table_name": "fact_uci_transfusion_events.csv",
+        "rows": 748,
+        "grain": "Individual donor study cohort observation",
+        "measures": [
+          "recency_months",
+          "frequency_times",
+          "monetary_cc",
+          "time_months",
+          "avg_donation_interval_months",
+          "donation_rate_cc_per_month"
+        ],
+        "target": "donated_blood_march_2007 (binary)"
+      }
+    ],
+    "dimension_tables": [
+      {
+        "table_name": "dim_indian_blood_banks.csv",
+        "rows": 2823,
+        "foreign_keys": [
+          "geography_id -> dim_geography.geography_id"
+        ],
+        "description": "Indian blood bank facility directory entity dimension"
+      },
+      {
+        "table_name": "dim_geography.csv",
+        "rows": 1193,
+        "description": "Conformed geographic hierarchy (Country, State, District, City)"
+      },
+      {
+        "table_name": "dim_blood_group.csv",
+        "rows": 5,
+        "description": "Conformed ABO blood type and aggregation classification"
+      },
+      {
+        "table_name": "dim_time.csv",
+        "rows": 7587,
+        "description": "Daily calendar time dimension (2006 to 2026)"
+      }
+    ]
+  }
+}
